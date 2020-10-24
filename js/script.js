@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var currentGalleryPaintings;
     var selectedPainting;
     
+    //close single painting view on button click
     document.getElementById("close-button").addEventListener('click', function() {
         document.getElementById("large-painting").src = "";
         document.getElementById("original-painting").src = "";
@@ -19,16 +20,19 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector(".container").classList.toggle("closed");
     });
     
+    //display original painting after clicking single painting view
     document.getElementById("large-painting").addEventListener('click', function() {
         document.querySelector(".painting-container").classList.toggle("open");
         document.querySelector(".original-painting-container").classList.toggle("open");
     });
     
+    //close original painting after clicking and display single painting view
     document.getElementById("original-painting").addEventListener('click', function() {
         document.querySelector(".painting-container").classList.toggle("open");
         document.querySelector(".original-painting-container").classList.toggle("open");
     });
     
+    //get galleries from url
     function getGalleries() {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
@@ -48,12 +52,15 @@ document.addEventListener("DOMContentLoaded", function() {
         xhttp.send();
     }
     
+    //populate gallery list using gallery JSON
     function loadGalleries() {
         //popoulate list
         document.getElementById("gallery-list").innerHTML = "";
         for (let gallery of galleriesJSON) {
             var li = document.createElement("LI");
             li.innerHTML = gallery.GalleryName;
+            
+            //add on click event to gallery to load gallery info and get paintings
             li.addEventListener('click', function() {
                 currentGallery = gallery;
                 loadGalleryInfo();
@@ -64,6 +71,7 @@ document.addEventListener("DOMContentLoaded", function() {
         } 
     }
     
+    //get gallery paintings using selected gallery ID
     function getGalleryPaintings() {
         let url = galleryPaintingsURL + currentGallery.GalleryID;
         var xhttp = new XMLHttpRequest();
@@ -85,6 +93,7 @@ document.addEventListener("DOMContentLoaded", function() {
         xhttp.send();
     }
     
+    //populate gallery info in view
     function loadGalleryInfo() {
         document.getElementById("gallery-name").innerHTML = currentGallery.GalleryName;
         document.getElementById("gallery-native-name").innerHTML = currentGallery.GalleryNativeName;
@@ -94,6 +103,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("gallery-website").innerHTML = "<a href ='" + currentGallery.GalleryWebSite + "'>" + currentGallery.GalleryWebSite + "</a>"; 
     }
     
+    //load map in view
     function loadMap() {
         var map;
         map = new google.maps.Map(document.getElementById("map"), { 
@@ -102,6 +112,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
     
+    //load paintings into table from selected gallery
     function loadPaintings() {
         document.getElementById("paintings").innerHTML = "";
         for (let painting of currentGalleryPaintings) {
@@ -114,6 +125,8 @@ document.addEventListener("DOMContentLoaded", function() {
             
             image.src = squarePaintingURL + painting.ImageFileName;
             image.alt = painting.Title;
+            
+            //add on click event to image element to show single painting view
             image.addEventListener('click', function() {
                 selectedPainting = painting;
                 loadPaintingView()
@@ -134,6 +147,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
     
+    //load info into single painting view
     function loadPaintingView() {
         document.getElementById("large-painting").src = largePaintingURL + selectedPainting.ImageFileName;
         document.getElementById("original-painting").src = originalPaintingURL + selectedPainting.ImageFileName;
@@ -151,6 +165,7 @@ document.addEventListener("DOMContentLoaded", function() {
         setPaintingColors();
     }
     
+    //load dominant colors in single painting view
     function setPaintingColors() {
         let paintingColors = selectedPainting.JsonAnnotations.dominantColors;
         document.getElementById("painting-colors").innerHTML = "";
