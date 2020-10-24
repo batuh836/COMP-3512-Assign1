@@ -1,0 +1,79 @@
+body, div, span, h1, h2, h3, h4, aside, p, main, nav, ul, li {
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+body {
+    padding: 15px;
+}
+
+.header {
+    font-weight: bold;
+}
+
+.section {
+    background-color: lightgray;
+}
+
+.container {
+    visibility: visible;
+    height: 100vh;
+    display: grid;
+    grid-gap: 15px;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.container.closed {
+    visibility: hidden;
+    height: 0vh;
+    display: grid;
+    grid-gap: 15px;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.painting-container {
+    visibility: hidden;
+    height: 0vh;
+    display: grid;
+    grid-gap: 15px;
+    grid-template-columns: 0fr 0fr;
+}
+
+.painting-container.open {
+    visibility: visible;
+    height: auto;
+    display: grid;
+    grid-gap: 15px;
+    grid-template-columns: 1fr 1fr;
+}
+
+.original-painting-container {
+    visibility: hidden;
+    height: 100vh;
+}
+
+.original-painting-container.open {
+    visibility: visible;
+    height: 100vh;
+}
+
+.painting-color {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+}
+
+#gallery-data {
+    display: grid;
+    grid-gap: 15px;
+    grid-template-rows: 40vh 60vh;
+}
+
+#map {
+    height: 100%;
+}
+
+table {
+    width: 100%;
+}
