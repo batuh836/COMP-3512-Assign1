@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             else if (this.readyState == 4 && this.status == 200) {
                 currentGalleryPaintings = JSON.parse(this.responseText);
-                console.log(currentGalleryPaintings);
+                sortByArtist();
                 loadPaintings();
             }
         };
@@ -95,7 +95,6 @@ document.addEventListener("DOMContentLoaded", function() {
     //load paintings into table from selected gallery
     function loadPaintings() {
         document.getElementById("paintings").innerHTML = "";
-        sortByArtist();
         
         for (let painting of currentGalleryPaintings) {
             var tableRow = document.createElement("TR");
