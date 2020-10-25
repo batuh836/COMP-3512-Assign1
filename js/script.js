@@ -12,26 +12,6 @@ document.addEventListener("DOMContentLoaded", function() {
     var currentGalleryPaintings;
     var selectedPainting;
     
-    //close single painting view on button click
-    document.getElementById("close-button").addEventListener('click', function() {
-        document.getElementById("large-painting").src = "";
-        document.getElementById("original-painting").src = "";
-        document.querySelector(".painting-container").classList.toggle("open");
-        document.querySelector(".container").classList.toggle("closed");
-    });
-    
-    //display original painting after clicking single painting view
-    document.getElementById("large-painting").addEventListener('click', function() {
-        document.querySelector(".painting-container").classList.toggle("open");
-        document.querySelector(".original-painting-container").classList.toggle("open");
-    });
-    
-    //close original painting after clicking and display single painting view
-    document.getElementById("original-painting").addEventListener('click', function() {
-        document.querySelector(".painting-container").classList.toggle("open");
-        document.querySelector(".original-painting-container").classList.toggle("open");
-    });
-    
     //get galleries from url
     function getGalleries() {
         var xhttp = new XMLHttpRequest();
@@ -115,6 +95,8 @@ document.addEventListener("DOMContentLoaded", function() {
     //load paintings into table from selected gallery
     function loadPaintings() {
         document.getElementById("paintings").innerHTML = "";
+        sortByArtist();
+        
         for (let painting of currentGalleryPaintings) {
             var tableRow = document.createElement("TR");
             var paintingColumn = document.createElement("TD");
@@ -128,10 +110,12 @@ document.addEventListener("DOMContentLoaded", function() {
             
             //add on click event to image element to show single painting view
             image.addEventListener('click', function() {
-                selectedPainting = painting;
-                loadPaintingView()
-                document.querySelector(".painting-container").classList.toggle("open");
-                document.querySelector(".container").classList.toggle("closed");
+                togglePaintingView(painting);
+            });
+            
+            //add on click event to image element to show single painting view
+            titleColumn.addEventListener('click', function() {
+                togglePaintingView(painting);
             });
             
             paintingColumn.appendChild(image);
@@ -144,6 +128,21 @@ document.addEventListener("DOMContentLoaded", function() {
             tableRow.appendChild(titleColumn);
             tableRow.appendChild(yearColumn);
             document.getElementById("paintings").appendChild(tableRow);
+        }
+    }
+    
+    function togglePaintingView(painting) {
+        if (painting != null) {
+            selectedPainting = painting;
+            loadPaintingView()
+            document.querySelector(".painting-container").classList.toggle("open");
+            document.querySelector(".container").classList.toggle("closed");
+        }
+        else {
+            document.getElementById("large-painting").src = "";
+            document.getElementById("original-painting").src = "";
+            document.querySelector(".painting-container").classList.toggle("open");
+            document.querySelector(".container").classList.toggle("closed");
         }
     }
     
@@ -178,6 +177,73 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("painting-colors").appendChild(span);
         }
     }
+    
+    function sortByArtist() {
+        currentGalleryPaintings.sort(function(a, b) {
+            var aArtist = a.LastName.toLowerCase();
+            var bArtist = b.LastName.toLowerCase();
+            if (aArtist < bArtist) {return -1;}
+            if (aArtist > bArtist) {return 1;}
+            return 0;
+        });
+    }
+    
+    function sortByTitle() {
+        currentGalleryPaintings.sort(function(a, b) {
+            var aTitle = a.Title.toLowerCase();
+            var bTitle = b.Title.toLowerCase();
+            if (aTitle < bTitle) {return -1;}
+            if (aTitle > bTitle) {return 1;}
+            return 0;
+        });
+    }
+    
+    function sortByYear() {
+        currentGalleryPaintings.sort(function(a, b) {
+            return a.YearOfWork - b.YearOfWork;
+        });
+    }
+    
+    //close single painting view on button click
+    document.getElementById("close-button").addEventListener('click', function() {
+        togglePaintingView();
+    });
+    
+    //display original painting after clicking single painting view
+    document.getElementById("large-painting").addEventListener('click', function() {
+        document.querySelector(".painting-container").classList.toggle("open");
+        document.querySelector(".original-painting-container").classList.toggle("open");
+    });
+    
+    //close original painting after clicking and display single painting view
+    document.getElementById("original-painting").addEventListener('click', function() {
+        document.querySelector(".painting-container").classList.toggle("open");
+        document.querySelector(".original-painting-container").classList.toggle("open");
+    });
+    
+    //sort paintings by artist when header is clicked
+    document.getElementById("artist-sort").addEventListener('click', function() {
+        if (currentGalleryPaintings != null) {
+            sortByArtist();
+            loadPaintings();
+        }
+    });
+    
+    //sort paintings by title when header is clicked
+    document.getElementById("title-sort").addEventListener('click', function() {
+        if (currentGalleryPaintings != null) {
+            sortByTitle();
+            loadPaintings();
+        }
+    });
+    
+    //sort paintings by year when header is clicked
+    document.getElementById("year-sort").addEventListener('click', function() {
+        if (currentGalleryPaintings != null) {
+            sortByYear();
+            loadPaintings();
+        }
+    });
     
     getGalleries();
 });
