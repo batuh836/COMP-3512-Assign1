@@ -106,6 +106,7 @@ document.addEventListener("DOMContentLoaded", function() {
             
             image.src = squarePaintingURL + painting.ImageFileName;
             image.alt = painting.Title;
+            titleColumn.style.textDecoration = "underline";
             
             //add on click event to image element to show single painting view
             image.addEventListener('click', function() {
@@ -178,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     function sortByArtist() {
-        currentGalleryPaintings.sort(function(a, b) {
+        currentGalleryPaintings.sort(function(a,b) {
             var aArtist = a.LastName.toLowerCase();
             var bArtist = b.LastName.toLowerCase();
             if (aArtist < bArtist) {return -1;}
@@ -188,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     function sortByTitle() {
-        currentGalleryPaintings.sort(function(a, b) {
+        currentGalleryPaintings.sort(function(a,b) {
             var aTitle = a.Title.toLowerCase();
             var bTitle = b.Title.toLowerCase();
             if (aTitle < bTitle) {return -1;}
@@ -198,7 +199,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     function sortByYear() {
-        currentGalleryPaintings.sort(function(a, b) {
+        currentGalleryPaintings.sort(function(a,b) {
             return a.YearOfWork - b.YearOfWork;
         });
     }
